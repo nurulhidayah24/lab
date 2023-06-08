@@ -1,0 +1,54 @@
+package exercise;
+
+import java.io.DataInputStream;
+import java.io.FileInputStream;
+
+
+public class DailyRainfall {
+
+	public static void main(String[] args) {
+
+		
+		String sourceFile = "rainfalldata.txt";
+		System.out.println("Reading data from " + sourceFile + "\n");
+
+		try {
+
+			
+			DataInputStream dis = new DataInputStream(new FileInputStream(sourceFile));
+
+			
+			double dailyRainfall = 0;
+			double totaldailyRainfall = 0;
+			int noOfRecords = 0;
+			String station = "";
+			
+			
+			while(dis.available() > 0) {
+				
+				// Read data
+				station = dis.readUTF();
+				dailyRainfall = dis.readDouble();
+				System.out.println( station + "\t" + dailyRainfall);
+				
+				// Calculate total utilization
+				totaldailyRainfall += dailyRainfall;
+				noOfRecords ++;
+			}
+			
+			
+			dis.close();
+			
+			
+			double averagedailyRainfall = totaldailyRainfall / noOfRecords;
+			System.out.print("\nAverage daily rainfall for " + noOfRecords 
+					+ " days: " + averagedailyRainfall);
+			
+		} catch (Exception ex) {
+			
+			ex.printStackTrace();
+		}
+
+	}
+
+}
