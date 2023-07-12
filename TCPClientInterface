@@ -1,0 +1,76 @@
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.InetAddress;
+import java.net.Socket;
+import java.io.*;
+import java.net.*;
+import javax.swing.*;
+
+public class TCPClientInterface {
+    private static final String SERVER_IP = "localhost";
+    private static final int SERVER_PORT = 1234;
+    
+    private Socket socket;
+    private ObjectOutputStream outputStream;
+    private ObjectInputStream inputStream;
+    
+    private JFrame frame;
+    private JTextArea textArea;
+    private JTextField textField;
+    private JButton send;
+
+    public TCPClient() {
+        frame = new JFrame("Client");
+        frame.setLayout(new BorderLayout());
+        
+        textArea = new JTextArea();
+        JScrollPane scrollPane = new JScrollPane(textArea);
+        frame.add(scrollPane, BorderLayout.CENTER);
+        
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
+        
+        textField = new JTextField();
+        panel.add(textField, BorderLayout.CENTER);
+        
+        send = new JButton("Send");
+        send.addActionListener(e -> sendData());
+        panel.add(send, BorderLayout.EAST);
+        
+        frame.add(panel, BorderLayout.SOUTH);
+        
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(400, 300);
+        frame.setVisible(true);
+        
+        try {
+            socket = new Socket(SERVER_IP, SERVER_PORT);
+            outputStream = new ObjectOutputStream(socket.getOutputStream());
+            inputStream = new ObjectInputStream(socket.getInputStream());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    private void sendData() {
+        try {
+            String text = textField.getText();
+            outputStream.writeObject(text);
+            outputStream.flush();
+            textField.setText("");
+            textArea.append("Sent: " + text + "\n");
+            
+            String response = (String) inputStream.readObject();
+            textArea.append("Received: " + response + "\n\n");
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public static void main(String[] args) {
+        new TCPClient();
+    }
+}
+
