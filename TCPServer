@@ -1,0 +1,41 @@
+import java.io.bufferedreader;
+import java.io.InputStreamReader;
+import java.io.DataOutputStream;
+import java.io.OutputStream;
+import java.net.InetAddress;
+import java.net.Socket;
+
+public class TCPServer {
+    public static void main(String[] args) throws IOException {
+        ServerSocket welcomeSocket = new ServerSocket(8080);
+
+        while (true) {
+            // Wait for a client to connect
+            Socket connectionSocket = welcomeSocket.accept();
+
+            // Create input and output streams for the socket
+            BufferedReader inFromClient = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
+            DataOutputStream outToClient = new DataOutputStream(connectionSocket.getOutputStream());
+
+            // Read the English text and target language from the client
+            String englishText = inFromClient.readLine();
+            String targetLanguage = inFromClient.readLine();
+
+            // Perform translation using your translation logic
+            String translatedText = translate(englishText, targetLanguage);
+
+            // Send the translated text back to the client
+            outToClient.writeBytes(translatedText + "\n");
+
+            // Close the connection
+            connectionSocket.close();
+        }
+    }
+
+    public static String translate(String text, String targetLanguage) {
+        // Add your translation logic here
+        // You can use existing translation libraries or services to perform the translation
+
+        return "Translated text";
+    }
+}
