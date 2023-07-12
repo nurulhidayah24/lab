@@ -1,0 +1,36 @@
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.InetAddress;
+import java.net.Socket;
+
+public class TCPClient {
+    public static void main(String[] args) throws IOException {
+        String serverIP = "127.0.0.1"; 
+        
+        Socket clientSocket = new Socket(serverIP, 8080);
+        
+        // Create input and output streams for the socket
+        BufferedReader inFromUser = new BufferedReader(new InputStreamReader(System.in));
+        BufferedReader inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+        DataOutputStream outToServer = new DataOutputStream(clientSocket.getOutputStream());
+        
+        System.out.print("Enter the English text: ");
+        String englishText = inFromUser.readLine();
+        System.out.print("Enter the target language: ");
+        String targetLanguage = inFromUser.readLine();
+        
+        // Send the English text and target language to the server
+        outToServer.writeBytes(englishText + "\n");
+        outToServer.writeBytes(targetLanguage + "\n");
+        
+        // Read and display the translated text from the server
+        String translatedText = inFromServer.readLine();
+        System.out.println("Translated Text: " + translatedText);
+        
+        // Close the socket connection
+        clientSocket.close();
+    }
+}
+		
