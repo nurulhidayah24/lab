@@ -29,7 +29,8 @@ public class UDPServerSideApp {
 
 	public static void main(String[] args) {
 		
-		System.out.println("UDPServerSideApp: Demonstration of UDP Server-Side " + "Application.");
+		System.out.println("UDPServerSideApp: Demonstration of UDP Server-Side "
+				+ "Application.");
 		
 		
 		// Permissible port for this application
@@ -65,32 +66,10 @@ public class UDPServerSideApp {
 				
 				// This is not used because it give a misleading result
 	            // int length = sentence.length();
-
-        private static String countCharacters(String sentence) {
-        int vowels = 0;
-        int consonants = 0;
-        int punctuations = 0;
-        
-        for (int i = 0; i < sentence.length(); i++) {
-            char ch = sentence.charAt(i);
-            
-            if (Character.isLetter(ch)) {
-                ch = Character.toLowerCase(ch);
-                
-                if (ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u') {
-                    vowels++;
-                } else {
-                    consonants++;
-                }
-            } else if (Character.isWhitespace(ch)) {
-                continue;
-            } else {
-                punctuations++;
-            }
-        }
-        
-    }
-
+	            
+	            // More processing
+	            int totalCharacters =  processor.countCharacters();
+	            byte[] outData = processor.convertToByteArray(totalCharacters);
 	            
 	            // 7. Get the client information
 	            InetAddress clientAddress =  receivedPacket.getAddress();
@@ -103,8 +82,8 @@ public class UDPServerSideApp {
 	            
 	            // 9. Reply to client
 	            datagramSocket.send(outPacket);
-	            System.out.println("Message sent (vowels, consonents, punctuations) : " 
-	            		+ vowels  + ".\n" + consonents  + ".\n" + punctuations  + ".\n");
+	            System.out.println("Message sent (totalCharacters) : " 
+	            		+ totalCharacters  + ".\n");
 	            
         	}
 				
