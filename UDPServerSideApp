@@ -8,18 +8,7 @@ import java.net.InetAddress;
 
 import serverside.SentenceProcessor;
 
-/**
- * An example of server-Side application using UDP
- * 
- * How to run this application
- * 1. Open terminal
- * 2. Change to directory to /workspace-dad/udpdemo/bin
- * 3. java UDPServerSideApp
- * 4. Initial output: 
- * 	UDPServerSideApp: Demonstration of UDP Server-Side Application.
- * 5. Final output: 
- * 	Message received: Good morning.
- * 
+
  * 
  * @author emalianakasmuri
  *
@@ -64,9 +53,7 @@ public class UDPServerSideApp {
 				String sentence = processor.getSentence();
 				System.out.println("\nMessage received: " + sentence + ".\n");
 				
-				// This is not used because it give a misleading result
-	            // int length = sentence.length();
-	            
+				
 	            // More processing
 	            int totalCharacters =  processor.countCharacters();
 	            byte[] outData = processor.convertToByteArray(totalCharacters);
