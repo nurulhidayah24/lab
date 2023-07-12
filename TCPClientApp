@@ -1,0 +1,48 @@
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.InetAddress;
+import java.net.Socket;
+
+
+
+public class TCPClientApp {
+
+	public static void main(String[] args) {
+		
+		System.out.println("\n\t Executing TCPClientApp");
+		
+		public class WordCountClient {
+    public static void main(String[] args) {
+        String hostname = "localhost"; // The hostname or IP address of the server
+        int port = 1234; // The port number to connect to
+
+        try {
+            // Connect to the server
+            Socket serverSocket = new Socket(hostname, port);
+
+            // Write the text to the server
+            PrintWriter out = new PrintWriter(serverSocket.getOutputStream());
+            String text = "This is an example text";
+            out.println(text);
+            out.flush();
+            System.out.println("Sent text to server: " + text);
+
+            // Read the word count from the server
+            BufferedReader in = new BufferedReader(new InputStreamReader(serverSocket.getInputStream()));
+            int wordCount = Integer.parseInt(in.readLine());
+            System.out.println("Received word count from server: " + wordCount);
+
+            // Close the connections
+            in.close();
+            out.close();
+            serverSocket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+		
+	
