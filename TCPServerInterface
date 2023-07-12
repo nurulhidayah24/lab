@@ -1,0 +1,72 @@
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.InetAddress;
+import java.net.Socket;
+import java.io.*;
+import java.net.*;
+import javax.swing.*;
+
+
+public class TCPServerInterface {
+    private static final int SERVER_PORT = 1234;
+    
+    private ServerSocket serverSocket;
+    private Socket socket;
+    
+    private JTextArea textArea;
+    private int numRequests;
+    
+    public TCPServer() {
+        numRequests = 0;
+        
+        JFrame frame = new JFrame("Server");
+        frame.setLayout(new BorderLayout());
+        
+        textArea = new JTextArea();
+        textArea.setEditable(false);
+        JScrollPane scrollPane = new JScrollPane(textArea);
+        frame.add(scrollPane, BorderLayout.CENTER);
+        
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(400, 300);
+        frame.setVisible(true);
+        
+        try {
+            serverSocket = new ServerSocket(SERVER_PORT);
+            while (true) {
+                socket = serverSocket.accept();
+                numRequests++;
+                textArea.append("Request " + numRequests + " received.\n");
+                
+                Thread thread = new HandlerThread(socket, numRequests);
+                thread.start();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public static void main(String[] args) {
+        new TCPServer();
+    }
+    
+    private class HandlerThread extends Thread {
+        private Socket threadSocket;
+        private int threadRequestNum;
+        
+        public HandlerThread(Socket socket, int requestNum) {
+            threadSocket = socket;
+            threadRequestNum = requestNum;
+        }
+        
+        @Override
+        public void run() {
+            try {
+                ObjectInputStream inputStream = new ObjectInputStream(threadSocket.getInputStream());
+                ObjectOutputStream outputStream = new ObjectOutputStream(threadSocket.getOutputStream());
+                
+                String text = (String) inputStream.readObject();
+                textArea.append("Request " + threadRequestNum + " - Text: " + text + "\n");
+                String translatedText = translate;
