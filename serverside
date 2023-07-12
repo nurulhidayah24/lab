@@ -33,23 +33,32 @@ public class SentenceProcessor {
         return outData;
 	}
 	
-	/**
-	 * This method count the number of characters in a sentence
-	 * @return
-	 */
-	public int countCharacters() {
-		
-        int index = 0;
-        char currentChar = sentence.charAt(index);
-        while (currentChar != '\0') {
-        	
-        	currentChar = sentence.charAt(index++);
+	private static String countCharacters(String sentence) {
+        int vowels = 0;
+        int consonants = 0;
+        int punctuations = 0;
+        
+        for (int i = 0; i < sentence.length(); i++) {
+            char ch = sentence.charAt(i);
+            
+            if (Character.isLetter(ch)) {
+                ch = Character.toLowerCase(ch);
+                
+                if (ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u') {
+                    vowels++;
+                } else {
+                    consonants++;
+                }
+            } else if (Character.isWhitespace(ch)) {
+                continue;
+            } else {
+                punctuations++;
+            }
         }
         
-
-        return index - 1;
-	}
-	
-	
-
+        String result = "Vowels: " + vowels + ", Consonants: " + consonants + ", Punctuations: " + punctuations;
+        return result;
+    }
 }
+
+	
